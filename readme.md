@@ -4,6 +4,9 @@ d’importance décroissante :
 
 
 - [ ] de définir interactivement ou par commandes une scène en 3D isométrique,
+- [ ] afficher un cube
+- [ ] placer un cube dans le plan isometrique
+- [ ] effacer un cube dans le plan isometrique
 - [ ] de choisir couleurs et « hauteur » des cubes,
 - [ ] d’offrir une aide en ligne si possible contextuelle,
 - [ ] de modifier ou de supprimer des parties de la scène,
