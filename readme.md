@@ -7,6 +7,7 @@ d’importance décroissante :
 - [x] afficher un cube
 - [x] placer un cube dans le plan isometrique
 - [ ] mettre en oevre l'algorithme du peintre
+- [ ] mettre en oeuvre de l'algorithme zenithal
 - [ ] habiliter la posibilite de placer de cubes a cote d'autres cubes
 - [ ] effacer un cube dans le plan isometrique
 - [ ] de choisir couleurs et « hauteur » des cubes,
