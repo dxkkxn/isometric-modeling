@@ -5,7 +5,7 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
 def distance(x_0: int, y_0: int, x_1: int, y_1:int):
-    print(x_0, y_0, x_1, y_1)
+    # print(x_0, y_0, x_1, y_1)
     return ((x_0-x_1)**2+(y_0-y_1)**2)**0.5
 
 def create_rhombus(start_x:int, start_y:int, big_diag:int, height:int, pos_x:int, pos_y:int):
@@ -18,6 +18,7 @@ def create_rhombus(start_x:int, start_y:int, big_diag:int, height:int, pos_x:int
                           start_x-big_diag/2, start_y+small_diag/2,
                           outline="red", fill="green", tags=("rhombus", (height, pos_x, pos_y), "sup"))
 
+
 def get_grid_pos(event=None):
     # grid_size = 3
     # big_d = distance(B_x, B_y, D_x, D_y) / grid_size
@@ -28,7 +29,7 @@ def get_grid_pos(event=None):
     # a_y = A_y
     id_curr = canvas.find_withtag("current")
     height, pos_x, pos_y = (canvas.gettags(id_curr)[1]).split(' ')
-    print(f"here >> height = {height}, pos_x = {pos_x}, pos_y = {pos_y}")
+    # print(f"here >> height = {height}, pos_x = {pos_x}, pos_y = {pos_y}")
     return [height, pos_x, pos_y]
 
     # a, b = (A_x+event.x)+A_y+
@@ -52,65 +53,14 @@ def reset_color(event=None):
     id_curr = canvas.find_withtag("current")
     canvas.itemconfigure(id_curr, fill="black")
 
-
-all_cubes_pos = []
-# def redisplay_all_cubes(event=None):
-
-def display_cube(event=None):
-    new_pos = get_grid_pos(event)
-    orientation = canvas.gettags(canvas.find_withtag("current"))[2]
-    if orientation == "right":
-        new_pos[2] = str(int(new_pos[2]) + 1)
-    all_cubes_pos.append(new_pos)
-    print(all_cubes_pos)
-    all_cubes_pos.sort()
-    print("here",all_cubes_pos)
-    for cube_pos in all_cubes_pos:
-        id_curr = canvas.find_withtag("current")[0]
-        print("orientation", canvas.gettags(id_curr))
-        cube_pos = " ".join(cube_pos)
-        print( canvas.find_withtag(cube_pos))
-        id_curr = canvas.find_withtag(cube_pos)[0]
-        print("id_curr", id_curr)
-        a_x, a_y, b_x, b_y, c_x, c_y, d_x, d_y = canvas.coords(id_curr)
-        big_diag = distance(d_x, d_y, b_x, b_y)
-        small_diag = big_diag/2
-
-        cube_edge = small_diag
-        # print(f"a = {event.x+2*event.y/(4*cube_edge)},b = {2*event.y-event.x/(4*cube_edge)}")
-        a_y -= cube_edge
-        b_y -= cube_edge
-        c_y -= cube_edge
-        d_y -= cube_edge
-
-        print("cube_pos=", cube_pos)
-        cube_pos = str(int(cube_pos[0])+1)+cube_pos[1:]
-        print("cube_pos=", cube_pos)
-        canvas.create_polygon(a_x, a_y, b_x, b_y, c_x, c_y, d_x, d_y,
-                              outline="red", tags=("rhombus", cube_pos, "sup"))
-
-        canvas.create_polygon(d_x, d_y, c_x, c_y, c_x, c_y+cube_edge, d_x, d_y+cube_edge,
-                              outline="red", tags=("rhombus", cube_pos, "left"))
-
-        canvas.create_polygon(c_x, c_y, b_x, b_y, b_x, b_y+cube_edge, c_x, c_y+cube_edge,
-                              outline="red", tags=("rhombus", cube_pos, "right",))
-    # print(canvas.itemconfigure(id_curr))
-    # print(canvas.coords(id_curr))
-    # l = 50;
-    # a_x = event.x
-    # a_y = event.y
-    # print(big_diag, small_diag)
-    # assert(small_diag == distance(a_x, a_y, c_x, c_y))
-
-    # b_x = a_x+big_diag/2
-    # b_y = a_y+small_diag/2
-    # c_x = a_x
-    # c_y = a_y+small_diag
-    # d_x = a_x-big_diag/2
-    # d_y = a_y+small_diag/2
-    return
-
-
+def erase_cube(event=None):
+    print("entered")
+    id_curr = canvas.find_withtag("current")
+    pos = canvas.gettags(id_curr)[1]
+    print(pos, all_cubes_pos)
+    all_cubes_pos.remove(pos.split(' '))
+    for id_curr in canvas.find_withtag(pos):
+        canvas.delete(id_curr)
 
 A_x = None
 A_y = None
@@ -120,6 +70,7 @@ C_x = None
 C_y = None
 D_x = None
 D_y = None
+grid_size = None
 def create_plan():
     # canvas.create_polygon(x,y, x+300, y+100, x, y+200, x-3008. The Ca8. The Ca, y+100,x,y,
     #                       outline="red", joinstyle="round")
@@ -131,7 +82,7 @@ def create_plan():
     #              \ /
     #               C
 
-    global A_x, A_y, B_x, B_y, C_x, C_y, D_x, D_y
+    global A_x, A_y, B_x, B_y, C_x, C_y, D_x, D_y, grid_size
     grid_size = 7
 
     global SCREEN_HEIGHT, SCREEN_WIDTH
@@ -157,15 +108,103 @@ def create_plan():
     for i in range(grid_size):
         for j in range(grid_size):
             create_rhombus(A_x-i*(big_diag/2)+j*(big_diag/2),
-                           A_y+i*(small_diag/2)+j*(small_diag/2), big_diag, 0, j, i)
+                           A_y+i*(small_diag/2)+j*(small_diag/2), big_diag, -1, j, i)
             print(i,j)
 
     button.pack_forget()
     canvas.tag_bind("rhombus", sequence="<Enter>", func=change_color)
     canvas.tag_bind("rhombus", sequence="<Leave>", func=reset_color)
     canvas.tag_bind("rhombus", sequence="<ButtonPress-1>", func=display_cube)
+    canvas.tag_bind("rhombus", sequence="<ButtonPress-3>", func=erase_cube)
     print("created")
 
+    return
+
+
+def position_form_relative_points(height, x_pos, y_pos):
+    cube_edge = distance(A_x, A_y, C_x, C_y)
+    small_diag = cube_edge/grid_size
+    big_diag = small_diag*2
+    res_x = A_x
+    res_y = A_y
+    for _ in range(x_pos):
+        res_x += big_diag/2
+        res_y += small_diag/2
+    for _ in range(y_pos):
+        res_x -= big_diag/2
+        res_y += small_diag/2
+    for _ in range(height):
+        res_y -= small_diag
+    return res_x, res_y
+
+all_cubes_pos = []
+
+def display_cube(event=None):
+    new_pos = get_grid_pos(event)
+    orientation = canvas.gettags(canvas.find_withtag("current"))[2]
+    if orientation == "right":
+        new_pos[1] = str(int(new_pos[1]) + 1)
+    elif orientation == "sup" :
+        new_pos[0] = str(int(new_pos[0]) + 1)
+    elif orientation == "left":
+        new_pos[2] = str(int(new_pos[2]) + 1)
+    all_cubes_pos.append(new_pos)
+    # print(all_cubes_pos)
+    all_cubes_pos.sort()
+    # print("here",all_cubes_pos)
+    for cube_pos in all_cubes_pos:
+        for id_curr in (canvas.find_withtag(" ".join(cube_pos))):
+            canvas.delete(id_curr)
+        # print("orientation", canvas.gettags(id_curr))
+        cube_pos_str = " ".join(cube_pos)
+        # print( canvas.find_withtag(cube_pos))
+        # id_curr = canvas.find_withtag(cube_pos)[0]
+        # print("id_curr", id_curr)
+        cube_edge = distance(A_x, A_y, C_x, C_y)
+        small_diag = cube_edge/grid_size
+        big_diag = small_diag*2
+        a_x, a_y = position_form_relative_points(int(cube_pos[0]),
+                                                 int(cube_pos[1]),
+                                                 int(cube_pos[2]))
+        b_x, b_y= a_x+big_diag/2, a_y+small_diag/2
+        c_x, c_y, d_x, d_y = a_x, a_y+small_diag, a_x-big_diag/2, a_y+small_diag/2
+        # print("here", a_x, a_y, position_form_relative_points(int(cube_pos[0]),
+        #                                               int(cube_pos[1]),
+        #                                               int(cube_pos[2])))
+        cube_edge = small_diag
+        # print(f"a = {event.x+2*event.y/(4*cube_edge)},b = {2*event.y-event.x/(4*cube_edge)}")
+        a_y -= cube_edge
+        b_y -= cube_edge
+        c_y -= cube_edge
+        d_y -= cube_edge
+
+        # print("cube_pos=", cube_pos)
+        # cube_pos_str = str(int(cube_pos_str[0])+1)+cube_pos_str[1:]
+        # cube_pos[0] = str(int(cube_pos[0]) + 1)
+        cube_pos = " ".join(cube_pos)
+        # print("cube_pos=", cube_pos)
+        canvas.create_polygon(a_x, a_y, b_x, b_y, c_x, c_y, d_x, d_y,
+                              outline="red", tags=("rhombus", cube_pos, "sup"))
+
+        canvas.create_polygon(d_x, d_y, c_x, c_y, c_x, c_y+cube_edge, d_x, d_y+cube_edge,
+                              outline="red", tags=("rhombus", cube_pos, "left"))
+
+        canvas.create_polygon(c_x, c_y, b_x, b_y, b_x, b_y+cube_edge, c_x, c_y+cube_edge,
+                              outline="red", tags=("rhombus", cube_pos, "right",))
+    # print(canvas.itemconfigure(id_curr))
+    # print(canvas.coords(id_curr))
+    # l = 50;
+    # a_x = event.x
+    # a_y = event.y
+    # print(big_diag, small_diag)
+    # assert(small_diag == distance(a_x, a_y, c_x, c_y))
+
+    # b_x = a_x+big_diag/2
+    # b_y = a_y+small_diag/2
+    # c_x = a_x
+    # c_y = a_y+small_diag
+    # d_x = a_x-big_diag/2
+    # d_y = a_y+small_diag/2
     return
 
 
