@@ -16,19 +16,19 @@ def create_rhombus(start_x:int, start_y:int, big_diag:int, height:int, pos_x:int
     canvas.create_polygon(start_x, start_y, start_x+big_diag/2,
                           start_y+small_diag/2, start_x, start_y+small_diag,
                           start_x-big_diag/2, start_y+small_diag/2,
-                          outline="red", tags=("rhombus", (height, pos_x, pos_y)))
+                          outline="red", fill="green", tags=("rhombus", (height, pos_x, pos_y), "sup"))
 
 def get_grid_pos(event=None):
-    grid_size = 3
-    big_d = distance(B_x, B_y, D_x, D_y) / grid_size
-    small_d = distance(A_x, A_y, C_x, C_y) / grid_size
-    coords = [None, None]
-    print("entered")
-    a_x = A_x
-    a_y = A_y
+    # grid_size = 3
+    # big_d = distance(B_x, B_y, D_x, D_y) / grid_size
+    # small_d = distance(A_x, A_y, C_x, C_y) / grid_size
+    # coords = [None, None]
+    # print("entered")
+    # a_x = A_x
+    # a_y = A_y
     id_curr = canvas.find_withtag("current")
-    print(canvas.gettags(id_curr))
     height, pos_x, pos_y = (canvas.gettags(id_curr)[1]).split(' ')
+    print(f"here >> height = {height}, pos_x = {pos_x}, pos_y = {pos_y}")
     return [height, pos_x, pos_y]
 
     # a, b = (A_x+event.x)+A_y+
@@ -62,6 +62,8 @@ def display_cube(event=None):
     all_cubes_pos.sort()
     print("here",all_cubes_pos)
     for cube_pos in all_cubes_pos:
+        id_curr = canvas.find_withtag("current")[0]
+        print("orientation", canvas.gettags(id_curr))
         cube_pos = " ".join(cube_pos)
         print("cube_pos=", cube_pos)
         id_curr = canvas.find_withtag(cube_pos)[0]
@@ -81,13 +83,13 @@ def display_cube(event=None):
         cube_pos = str(int(cube_pos[0])+1)+cube_pos[1:]
         print("cube_pos=", cube_pos)
         canvas.create_polygon(a_x, a_y, b_x, b_y, c_x, c_y, d_x, d_y,
-                            outline="red", tags=("rhombus", cube_pos))
+                              outline="red", tags=("rhombus", cube_pos, "sup"))
 
         canvas.create_polygon(d_x, d_y, c_x, c_y, c_x, c_y+cube_edge, d_x, d_y+cube_edge,
-                            outline="red")
+                              outline="red", tags=("rhombus", cube_pos, "left"))
 
         canvas.create_polygon(c_x, c_y, b_x, b_y, b_x, b_y+cube_edge, c_x, c_y+cube_edge,
-                            outline="red")
+                              outline="red", tags=("rhombus", cube_pos, "right",))
     # print(canvas.itemconfigure(id_curr))
     # print(canvas.coords(id_curr))
     # l = 50;
