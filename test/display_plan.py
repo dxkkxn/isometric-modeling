@@ -57,7 +57,11 @@ all_cubes_pos = []
 # def redisplay_all_cubes(event=None):
 
 def display_cube(event=None):
-    all_cubes_pos.append(get_grid_pos(event))
+    new_pos = get_grid_pos(event)
+    orientation = canvas.gettags(canvas.find_withtag("current"))[2]
+    if orientation == "right":
+        new_pos[2] = str(int(new_pos[2]) + 1)
+    all_cubes_pos.append(new_pos)
     print(all_cubes_pos)
     all_cubes_pos.sort()
     print("here",all_cubes_pos)
@@ -65,7 +69,7 @@ def display_cube(event=None):
         id_curr = canvas.find_withtag("current")[0]
         print("orientation", canvas.gettags(id_curr))
         cube_pos = " ".join(cube_pos)
-        print("cube_pos=", cube_pos)
+        print( canvas.find_withtag(cube_pos))
         id_curr = canvas.find_withtag(cube_pos)[0]
         print("id_curr", id_curr)
         a_x, a_y, b_x, b_y, c_x, c_y, d_x, d_y = canvas.coords(id_curr)
@@ -164,6 +168,7 @@ def create_plan():
 
     return
 
+
 def get_window_size(event=None):
     #print("OOOOOOOOk")
     #print(event)
@@ -180,6 +185,7 @@ def get_window_size(event=None):
         canvas.configure(width=event.width, height=event.height)
     """
     return
+
 if __name__ == "__main__" :
     root = tk.Tk()
     root.title("plan")
