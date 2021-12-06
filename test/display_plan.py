@@ -1,5 +1,6 @@
 import tkinter as tk
-
+import random
+from parser_x import parser
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -16,7 +17,7 @@ def create_rhombus(start_x:int, start_y:int, big_diag:int, height:int, pos_x:int
     canvas.create_polygon(start_x, start_y, start_x+big_diag/2,
                           start_y+small_diag/2, start_x, start_y+small_diag,
                           start_x-big_diag/2, start_y+small_diag/2,
-                          outline="red", fill="green", tags=("rhombus", (height, pos_x, pos_y), "sup"))
+                          outline="black", width=2, fill="white", tags=("rhombus", (height, pos_x, pos_y), "sup"))
 
 
 def get_grid_pos(event=None):
@@ -28,7 +29,7 @@ def get_grid_pos(event=None):
     # a_x = A_x
     # a_y = A_y
     id_curr = canvas.find_withtag("current")
-    height, pos_x, pos_y = (canvas.gettags(id_curr)[1]).split(' ')
+    height, pos_x, pos_y = [int(x) for x in canvas.gettags(id_curr)[1].split(' ')]
     # print(f"here >> height = {height}, pos_x = {pos_x}, pos_y = {pos_y}")
     return [height, pos_x, pos_y]
 
@@ -44,21 +45,23 @@ def get_grid_pos(event=None):
     #         a_x += big_d/2
     #         a_y += small_d/2
 
+old_color = None
 def change_color(event=None):
+    global old_color
     id_curr = canvas.find_withtag("current")
+    old_color = canvas.itemcget(id_curr, "fill")
+    # print(old_color)
     canvas.itemconfigure(id_curr, fill="cyan")
 
 
 def reset_color(event=None):
     id_curr = canvas.find_withtag("current")
-    canvas.itemconfigure(id_curr, fill="black")
+    canvas.itemconfigure(id_curr, fill=old_color)
 
 def erase_cube(event=None):
-    print("entered")
     id_curr = canvas.find_withtag("current")
     pos = canvas.gettags(id_curr)[1]
-    print(pos, all_cubes_pos)
-    all_cubes_pos.remove(pos.split(' '))
+    all_cubes_pos.remove([int (x) for x in pos.split(' ')])
     for id_curr in canvas.find_withtag(pos):
         canvas.delete(id_curr)
 
@@ -138,34 +141,42 @@ def position_form_relative_points(height, x_pos, y_pos):
     return res_x, res_y
 
 all_cubes_pos = []
-
+colors = list(parser().keys())
 def display_cube(event=None):
     new_pos = get_grid_pos(event)
     orientation = canvas.gettags(canvas.find_withtag("current"))[2]
     if orientation == "right":
-        new_pos[1] = str(int(new_pos[1]) + 1)
+        new_pos[1] += 1
     elif orientation == "sup" :
-        new_pos[0] = str(int(new_pos[0]) + 1)
+        new_pos[0] += 1
     elif orientation == "left":
-        new_pos[2] = str(int(new_pos[2]) + 1)
+        new_pos[2] += 1
     all_cubes_pos.append(new_pos)
     # print(all_cubes_pos)
     all_cubes_pos.sort()
+    print(all_cubes_pos)
     # print("here",all_cubes_pos)
+    got_color  = False
     for cube_pos in all_cubes_pos:
-        for id_curr in (canvas.find_withtag(" ".join(cube_pos))):
+        for id_curr in (canvas.find_withtag(" ".join([str(x) for x in cube_pos]))):
+            curr_color =  canvas.itemcget(cube_pos, "fill")
+            if curr_color != "cyan" and curr_color != "":
+                old_color = curr_color
+                got_color  = True
             canvas.delete(id_curr)
+
+        if got_color is False:
+            old_color = random.choice(colors)
+        got_color  = False
         # print("orientation", canvas.gettags(id_curr))
-        cube_pos_str = " ".join(cube_pos)
         # print( canvas.find_withtag(cube_pos))
         # id_curr = canvas.find_withtag(cube_pos)[0]
         # print("id_curr", id_curr)
         cube_edge = distance(A_x, A_y, C_x, C_y)
         small_diag = cube_edge/grid_size
         big_diag = small_diag*2
-        a_x, a_y = position_form_relative_points(int(cube_pos[0]),
-                                                 int(cube_pos[1]),
-                                                 int(cube_pos[2]))
+        a_x, a_y = position_form_relative_points((cube_pos[0]), (cube_pos[1]),
+                                                 (cube_pos[2]))
         b_x, b_y= a_x+big_diag/2, a_y+small_diag/2
         c_x, c_y, d_x, d_y = a_x, a_y+small_diag, a_x-big_diag/2, a_y+small_diag/2
         # print("here", a_x, a_y, position_form_relative_points(int(cube_pos[0]),
@@ -181,16 +192,20 @@ def display_cube(event=None):
         # print("cube_pos=", cube_pos)
         # cube_pos_str = str(int(cube_pos_str[0])+1)+cube_pos_str[1:]
         # cube_pos[0] = str(int(cube_pos[0]) + 1)
-        cube_pos = " ".join(cube_pos)
+        cube_pos = " ".join([str(x) for x in cube_pos])
         # print("cube_pos=", cube_pos)
         canvas.create_polygon(a_x, a_y, b_x, b_y, c_x, c_y, d_x, d_y,
-                              outline="red", tags=("rhombus", cube_pos, "sup"))
+                              outline="black", width=2, fill=old_color,
+                              tags=("rhombus", cube_pos, "sup"))
 
         canvas.create_polygon(d_x, d_y, c_x, c_y, c_x, c_y+cube_edge, d_x, d_y+cube_edge,
-                              outline="red", tags=("rhombus", cube_pos, "left"))
+                              outline="black", width=2, fill=old_color,
+                              tags=("rhombus", cube_pos, "left"))
 
-        canvas.create_polygon(c_x, c_y, b_x, b_y, b_x, b_y+cube_edge, c_x, c_y+cube_edge,
-                              outline="red", tags=("rhombus", cube_pos, "right",))
+        canvas.create_polygon(c_x, c_y, b_x, b_y, b_x, b_y+cube_edge, c_x,
+                              c_y+cube_edge, outline="black", width=2,
+                              fill=old_color,
+                              tags=("rhombus", cube_pos, "right",))
     # print(canvas.itemconfigure(id_curr))
     # print(canvas.coords(id_curr))
     # l = 50;
