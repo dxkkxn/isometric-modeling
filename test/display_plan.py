@@ -51,7 +51,7 @@ def change_color(event=None):
     id_curr = canvas.find_withtag("current")
     old_color = canvas.itemcget(id_curr, "fill")
     # print(old_color)
-    canvas.itemconfigure(id_curr, fill="cyan")
+    canvas.itemconfigure(id_curr, fill="#2bfafa")
 
 
 def reset_color(event=None):
@@ -140,8 +140,35 @@ def position_form_relative_points(height, x_pos, y_pos):
         res_y -= small_diag
     return res_x, res_y
 
+
+def shade_color(color: list, factor:int):
+    shaded_color  = [(1-factor)*x for x in color]
+    shaded_color  = [int(x) for x in shaded_color]
+    return shaded_color 
+
+def rgb_list_to_hex_rgb(color: list):
+    print(color)
+    hex_rgb_list = []
+    for x in color:
+        hex_x = hex(x)[2:]
+        if len(hex_x) == 1: 
+            hex_x = "0"+hex_x
+        hex_rgb_list.append(hex_x)
+        
+    return "#"+ "".join(hex_rgb_list)
+
+def hex_rgb_to_rgb_list(color: str):
+    print(color)
+    rgb_list = []
+    for x in range(1, len(color), 2):
+        hex_x = color[x:x+2]
+        print("here", hex_x)
+        rgb_list.append(int(hex_x, 16))
+    return rgb_list
+
 all_cubes_pos = []
-colors = list(parser().keys())
+colors_dict = parser()
+colors = list(colors_dict.keys())
 def display_cube(event=None):
     new_pos = get_grid_pos(event)
     orientation = canvas.gettags(canvas.find_withtag("current"))[2]
@@ -158,16 +185,34 @@ def display_cube(event=None):
     # print("here",all_cubes_pos)
     got_color  = False
     for cube_pos in all_cubes_pos:
-        for id_curr in (canvas.find_withtag(" ".join([str(x) for x in cube_pos]))):
-            curr_color =  canvas.itemcget(cube_pos, "fill")
-            if curr_color != "cyan" and curr_color != "":
-                old_color = curr_color
-                got_color  = True
+        A = set((canvas.find_withtag(" ".join([str(x) for x in cube_pos]))))
+        B = set((canvas.find_withtag("sup")))
+        C = set((canvas.find_withtag("left")))
+        D = set((canvas.find_withtag("right")))
+        try:
+            old_color = canvas.itemcget(list(A.intersection(B))[0], "fill")
+            s2 = canvas.itemcget(list(A.intersection(C))[0], "fill")
+            s1 = canvas.itemcget(list(A.intersection(D))[0], "fill")
+            print("here", old_color, s1, s2)
+            print("here", A.intersection(B), A.intersection(C), A.intersection(D))
+            got_color = True
+        except: 
+            got_color = False
+
+        for id_curr in canvas.find_withtag(" ".join([str(x) for x in cube_pos])):
             canvas.delete(id_curr)
 
         if got_color is False:
-            old_color = random.choice(colors)
+            old_color = colors_dict[random.choice(colors)]
+            s1 = shade_color(old_color, 0.5)
+            s2 = shade_color(s1, 0.5)
+            s1 = rgb_list_to_hex_rgb(s1)
+            s2 = rgb_list_to_hex_rgb(s2)
+            old_color = rgb_list_to_hex_rgb(old_color)
+            print(old_color, s1, s2)
         got_color  = False
+
+        
         # print("orientation", canvas.gettags(id_curr))
         # print( canvas.find_withtag(cube_pos))
         # id_curr = canvas.find_withtag(cube_pos)[0]
@@ -199,12 +244,12 @@ def display_cube(event=None):
                               tags=("rhombus", cube_pos, "sup"))
 
         canvas.create_polygon(d_x, d_y, c_x, c_y, c_x, c_y+cube_edge, d_x, d_y+cube_edge,
-                              outline="black", width=2, fill=old_color,
+                              outline="black", width=2, fill=s2,
                               tags=("rhombus", cube_pos, "left"))
 
         canvas.create_polygon(c_x, c_y, b_x, b_y, b_x, b_y+cube_edge, c_x,
                               c_y+cube_edge, outline="black", width=2,
-                              fill=old_color,
+                              fill=s1,
                               tags=("rhombus", cube_pos, "right",))
     # print(canvas.itemconfigure(id_curr))
     # print(canvas.coords(id_curr))

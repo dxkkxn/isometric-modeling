@@ -17,3 +17,17 @@ d’importance décroissante :
 - [ ] de sauvegarder et de charger des scènes,
 - [ ] de paramétrer les constituants de l’application,
 - [ ] d’associer des pixmaps aux cubes
+
+
+Questions
+- [ ] augmenter taille cubes? -> zoom scroll_bar
+- [ ] Placer des cubes en hauteur?
+- [ ] modifier ou de supprimer des parties de la scene
+- [ ] sauvegarder format?
+- [ ] couleurs ou pixmaps?
+- [ ] pismaps eclairage zenithal?
+- [ ] classe conteneur
+- [ ] aide design application
+- [ ] gerer orientation? essentiel?
+- [ ] %poo et %ihm
+
