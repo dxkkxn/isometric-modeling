@@ -1,17 +1,22 @@
-SCREEN_WIDTH = None
-SCREEN_HEIGHT = None
-A_x = None
-A_y = None
-B_x = None
-B_y = None
-C_x = None
-C_y = None
-D_x = None
-D_y = None
-PLAN_SIZE = None
-BIG_DIAG = None
-SMALL_DIAG = None
+from color import Color
+from rhombus import Rhombus
+from cube import Cube
+
+def create_rhombus(color, orientation, *args, **kwargs):
+    start_x, start_y = args
+    points = [start_x, start_y, start_x+BIG_DIAG/2,
+              start_y+SMALL_DIAG/2, start_x, start_y+SMALL_DIAG,
+              start_x-BIG_DIAG/2, start_y+SMALL_DIAG/2]
+    rhombus = Rhombus(color, orientation, *points, **kwargs)
+
+def distance(x_0 :int, y_0: int, x_1: int, y_1:int):
+    return ((x_0-x_1)**2+(y_0-y_1)**2)**0.5
+
 class Plan():
+    root = None
+    @staticmethod
+    def set_root(root):
+        Plan.root = root
     def __init__(self, size, *args, **kwargs):
         # we create a plan with vertex called A,B,C,D
         #               A
@@ -21,11 +26,11 @@ class Plan():
         #               C
 
         global A_x, A_y, B_x, B_y, C_x, C_y, D_x, D_y, PLAN_SIZE, SMALL_DIAG, BIG_DIAG
-        PLAN_SIZE = 7
+        PLAN_SIZE = size
 
         global SCREEN_HEIGHT, SCREEN_WIDTH
-        SCREEN_HEIGHT = root.winfo_height()
-        SCREEN_WIDTH = root.winfo_width()
+        SCREEN_HEIGHT = Plan.root.winfo_height()
+        SCREEN_WIDTH = Plan.root.winfo_width()
         print(SCREEN_HEIGHT, SCREEN_WIDTH)
         A_y = SCREEN_HEIGHT/2
         A_x = SCREEN_WIDTH/2
@@ -43,9 +48,8 @@ class Plan():
         for i in range(PLAN_SIZE):
             for j in range(PLAN_SIZE):
                 pos_str = " ".join(str(x) for x in [-1, j, i])
-                print(pos_str)
                 create_rhombus(Color.from_hex_str("#ffffff"), "sup",
                                A_x-i*(BIG_DIAG/2)+j*(BIG_DIAG/2),
                                A_y+i*(SMALL_DIAG/2)+j*(SMALL_DIAG/2),
                                tags=(pos_str,))
-                print(i,j)
+        Cube.set_global_vars(SMALL_DIAG, BIG_DIAG, A_x, A_y)

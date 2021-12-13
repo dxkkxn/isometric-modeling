@@ -1,7 +1,6 @@
 from color import Color
 from parser_x import parser
 import random
-import tkinter as tk
 from rhombus import Rhombus
 
 def create_cube(event=None):
@@ -29,14 +28,30 @@ class Cube(object):
     """
     all_cubes = {}
     nmemb = 0
+    small_diag = None
+    big_diag = None
+    A_x = None 
+    A_y = None
+    canvas = None
+
+    @staticmethod
+    def set_global_vars(small_diag, big_diag, A_x, A_y): 
+        Cube.small_diag = small_diag
+        Cube.big_diag = big_diag
+        Cube.A_x = A_x
+        Cube.A_y = A_y
+
+    @staticmethod
+    def set_canvas(canvas):
+        Cube.canvas = canvas
 
     @staticmethod
     def position_from_relative_points(height, x_pos, y_pos):
         # cube_edge = distance(A_x, A_y, C_x, C_y)
-        small_diag = SMALL_DIAG
-        big_diag = small_diag*2
-        res_x = A_x
-        res_y = A_y
+        small_diag = Cube.small_diag
+        big_diag = Cube.big_diag 
+        res_x = Cube.A_x
+        res_y = Cube.A_y
         for _ in range(x_pos):
             res_x += big_diag/2
             res_y += small_diag/2
@@ -59,15 +74,16 @@ class Cube(object):
 
     @staticmethod
     def bind():
-        canvas.tag_bind("cube", sequence="<ButtonPress-3>",
+
+        Cube.canvas.tag_bind("cube", sequence="<ButtonPress-3>",
                         func=Cube.erase_cube)
     @staticmethod
     def erase_cube(event=None):
-        id_curr = canvas.find_withtag("current")
-        pos = canvas.gettags(id_curr)[0]
+        id_curr = Cube.canvas.find_withtag("current")
+        pos = Cube.canvas.gettags(id_curr)[0]
         ids = Cube.all_cubes.pop(tuple((int(x)) for x in pos.split(' ')))
-        for id_curr in canvas.find_withtag(pos):
-            canvas.delete(id_curr)
+        for id_curr in Cube.canvas.find_withtag(pos):
+            Cube.canvas.delete(id_curr)
 
     @staticmethod
     def number_of_cubes():
@@ -80,14 +96,14 @@ class Cube(object):
         for i in range(1,len(all_positions)):
             str_lower = " ".join([str(x) for x in all_positions[i-1]])
             str_upper = " ".join([str(x) for x in all_positions[i]])
-            canvas.tag_raise(str_upper, str_lower)
+            Cube.canvas.tag_raise(str_upper, str_lower)
 
 
 
     def display_cube(self):
         a_x, a_y = self.position_from_relative_points(*self.__position)
-        big_diag = BIG_DIAG
-        small_diag = SMALL_DIAG
+        big_diag = Cube.big_diag
+        small_diag = Cube.small_diag
         dis = small_diag
         b_x = a_x+big_diag/2
         b_y = a_y+small_diag/2
