@@ -1,23 +1,18 @@
-from color import Color
-from parser_x import parser
-import random
+import tkinter as tk
 from rhombus import Rhombus
+from cube import Cube
+from plan import Plan
+from color import Color
+
+from time import sleep
+from PIL import Image, ImageTk
+
 
 def create_cube(event=None):
-    id_curr = canvas.find_withtag("current")[0]
-
-    print(">>>>>>>>", canvas.gettags(id_curr))
-    relative_pos = canvas.gettags(id_curr)[0]
-    relative_pos = [int(x) for x in relative_pos.split(' ')]
     color = Color.random_col()
+    print(color)
     rhombus = Rhombus.all_rhombus[id_curr]
     orientation = (rhombus.all_rhombus[id_curr].orientation)
-    if orientation == "sup":
-        relative_pos[0] += 1
-    elif orientation == "right":
-        relative_pos[1] += 1
-    elif orientation == "left":
-        relative_pos[2] += 1
 
     cube = Cube(relative_pos, color, "xd")
 
@@ -30,12 +25,12 @@ class Cube(object):
     nmemb = 0
     small_diag = None
     big_diag = None
-    A_x = None 
+    A_x = None
     A_y = None
     canvas = None
 
     @staticmethod
-    def set_global_vars(small_diag, big_diag, A_x, A_y): 
+    def set_global_vars(small_diag, big_diag, A_x, A_y):
         Cube.small_diag = small_diag
         Cube.big_diag = big_diag
         Cube.A_x = A_x
@@ -49,7 +44,7 @@ class Cube(object):
     def position_from_relative_points(height, x_pos, y_pos):
         # cube_edge = distance(A_x, A_y, C_x, C_y)
         small_diag = Cube.small_diag
-        big_diag = Cube.big_diag 
+        big_diag = Cube.big_diag
         res_x = Cube.A_x
         res_y = Cube.A_y
         for _ in range(x_pos):
@@ -92,6 +87,7 @@ class Cube(object):
     def painter_algorithm(self):
         all_positions = list(self.all_cubes.keys())
         all_positions.sort()
+        print(all_positions)
         for i in range(1,len(all_positions)):
             str_lower = " ".join([str(x) for x in all_positions[i-1]])
             str_upper = " ".join([str(x) for x in all_positions[i]])
@@ -117,10 +113,48 @@ class Cube(object):
         str_pos = " ".join([str(x) for x in self.__position])
         id_1 = Rhombus(color, "sup", a_x, a_y, b_x, b_y, c_x, c_y, d_x, d_y,
                         tags=(str_pos, "cube"))
-        id_2 = Rhombus(shaded_2, "left", d_x, d_y, c_x, c_y, c_x, c_y+dis, d_x, d_y+dis,
+        id_2 = Rhombus(shaded_1, "left", d_x, d_y, c_x, c_y, c_x, c_y+dis, d_x, d_y+dis,
                         tags=(str_pos, "cube"))
 
-        id_3 = Rhombus(shaded_1, "right", c_x, c_y, b_x, b_y, b_x, b_y+dis, c_x, c_y+dis,
+        id_3 = Rhombus(shaded_2, "right", c_x, c_y, b_x, b_y, b_x, b_y+dis, c_x, c_y+dis,
                         tags=(str_pos, "cube"))
         self.all_cubes[tuple(self.__position)] = [id_1, id_2, id_3]
         self.painter_algorithm()
+
+def create_cube(event=None):
+    id_curr = canvas.find_withtag("current")[0]
+
+    print(">>>>>>>>", canvas.gettags(id_curr))
+    relative_pos = canvas.gettags(id_curr)[0]
+    relative_pos = [int(x) for x in relative_pos.split(' ')]
+    color = Color.random_col()
+    rhombus = Rhombus.all_rhombus[id_curr]
+    orientation = (rhombus.all_rhombus[id_curr].orientation)
+    if orientation == "sup":
+        relative_pos[0] += 1
+    elif orientation == "right":
+        relative_pos[1] += 1
+    elif orientation == "left":
+        relative_pos[2] += 1
+
+    cube = Cube(relative_pos, color, "xd")
+
+
+if __name__ == "__main__" :
+    root = tk.Tk()
+    root.title("plan")
+
+    canvas = tk.Canvas(root, bg="white")
+
+    Rhombus.set_canvas(canvas)
+    Cube.set_canvas(canvas)
+
+    root.attributes("-zoom", True)
+    root.resizable(False, False)
+
+    canvas.bind(sequence="<ButtonPress-1>", func= create_cube)
+
+    canvas.pack(fill="both", expand=True)
+
+
+    root.mainloop()

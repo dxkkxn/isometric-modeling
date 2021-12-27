@@ -14,6 +14,7 @@ def distance(x_0 :int, y_0: int, x_1: int, y_1:int):
 
 class Plan():
     root = None
+    size = None
     @staticmethod
     def set_root(root):
         Plan.root = root
@@ -24,6 +25,7 @@ class Plan():
         #            D / \ B
         #              \ /
         #               C
+        Plan.size = size
 
         global A_x, A_y, B_x, B_y, C_x, C_y, D_x, D_y, PLAN_SIZE, SMALL_DIAG, BIG_DIAG
         PLAN_SIZE = size

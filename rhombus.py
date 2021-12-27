@@ -20,6 +20,10 @@ class Rhombus():
     def orientation(self):
         return self.__orientation
 
+    @property
+    def color(self):
+        return self.__color
+
     def __init__(self, color, orientation, *args, **kwargs):
         """
         Create a rhombus based on the start point and the big diagonal [2:1] prop
