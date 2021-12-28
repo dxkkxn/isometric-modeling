@@ -1,0 +1,34 @@
+Comment placer un cube?
+Pour cela il suffit de cliquer (click gauche) sur la grille ou sur un autre cube.
+Noter que la couleur du cube par defaut est en mode aletoire
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.

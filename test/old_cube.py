@@ -3,28 +3,7 @@ import tkinter as tk
 import display_plan as dp
 import random
 from parser_x import parser
-
-# class Color(object):
-#     def __init__(self, red :int, green: int, blue: int):
-#         self.__red = red
-#         self.__green = green
-#         self.__blue = blue
-#     @classmethod
-#     def from_hex_str(cls, str_hex_col: str):
-#         color = str_hex_col
-#         rgb_list = []
-#         for x in range(1, len(color), 2):
-#             hex_x = color[x:x+2]
-#             print("here", hex_x)
-#             rgb_list.append(int(hex_x, 16))
-#         res = cls()
-#         res.red = rgb_list[0]
-#         res.green = rgb_list[1]
-#         res.blue = rgb_list[2]
-#         return res
-#     def __str__(self):
-#         color_s = f"(red = {self.__red}, green= {self.__green}, blue = {self.__blue})"
-#         return color_s
+from PIL import Image, ImageTk
 
 def shade_color(color: list, factor:int):
     shaded_color  = [(1-factor)*x for x in color]
@@ -81,14 +60,20 @@ def display_cube(event=None):
     canvas.create_polygon(c_x, c_y, b_x, b_y, b_x, b_y+dis, c_x, c_y+dis,
                           fill=s1, width=2,outline="black", tags="rhombus")
 
+    canvas.create_image(a_x, a_y+small_diag, image =img, anchor="center")
+
     return
 
 if __name__ == "__main__" :
    root = tk.Tk()
    root.title("plan")
 
+   img = Image.open("./img/minecraft.png")
+   img = ImageTk.PhotoImage(img)
    canvas = tk.Canvas(root, bg="white")
    canvas.pack(side="top", expand=True, fill="both")
    canvas.bind(sequence="<ButtonPress-1>", func=display_cube)
    root.attributes("-zoomed", True)
+   frm  = tk.Frame(canvas, bg="green", width=400, height=200 )
+   frm.pack(side="left")
    root.mainloop()

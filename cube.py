@@ -41,9 +41,11 @@ class Cube(object):
         Cube.A_x = A_x
         Cube.A_y = A_y
 
+
     @staticmethod
     def set_canvas(canvas):
         Cube.canvas = canvas
+
 
     @staticmethod
     def position_from_relative_points(height, x_pos, y_pos):
@@ -72,11 +74,12 @@ class Cube(object):
             Cube.bind()
         Cube.nmemb += 1
 
+
     @staticmethod
     def bind():
-
         Cube.canvas.tag_bind("cube", sequence="<ButtonPress-3>",
                         func=Cube.erase_cube)
+
     @staticmethod
     def erase_cube(event=None):
         id_curr = Cube.canvas.find_withtag("current")
@@ -85,9 +88,11 @@ class Cube(object):
         for id_curr in Cube.canvas.find_withtag(pos):
             Cube.canvas.delete(id_curr)
 
+
     @staticmethod
     def number_of_cubes():
         return nmemb;
+
 
     def painter_algorithm(self):
         all_positions = list(self.all_cubes.keys())
@@ -96,7 +101,6 @@ class Cube(object):
             str_lower = " ".join([str(x) for x in all_positions[i-1]])
             str_upper = " ".join([str(x) for x in all_positions[i]])
             Cube.canvas.tag_raise(str_upper, str_lower)
-
 
 
     def display_cube(self):
@@ -117,10 +121,10 @@ class Cube(object):
         str_pos = " ".join([str(x) for x in self.__position])
         id_1 = Rhombus(color, "sup", a_x, a_y, b_x, b_y, c_x, c_y, d_x, d_y,
                         tags=(str_pos, "cube"))
-        id_2 = Rhombus(shaded_2, "left", d_x, d_y, c_x, c_y, c_x, c_y+dis, d_x, d_y+dis,
-                        tags=(str_pos, "cube"))
+        id_2 = Rhombus(shaded_2, "left", d_x, d_y, c_x, c_y, c_x, c_y+dis, d_x,
+                       d_y+dis, tags=(str_pos, "cube"))
 
-        id_3 = Rhombus(shaded_1, "right", c_x, c_y, b_x, b_y, b_x, b_y+dis, c_x, c_y+dis,
-                        tags=(str_pos, "cube"))
+        id_3 = Rhombus(shaded_1, "right", c_x, c_y, b_x, b_y, b_x, b_y+dis,
+                       c_x, c_y+dis, tags=(str_pos, "cube"))
         self.all_cubes[tuple(self.__position)] = [id_1, id_2, id_3]
         self.painter_algorithm()

@@ -1,0 +1,3 @@
+Comment changer la couleur d'un cube?
+Pour cela il suffit d'ouvrir la barre d'outils (coin superieur droit)et
+selectionner la couleur desire .

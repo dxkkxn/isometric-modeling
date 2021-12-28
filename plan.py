@@ -13,11 +13,11 @@ def distance(x_0 :int, y_0: int, x_1: int, y_1:int):
     return ((x_0-x_1)**2+(y_0-y_1)**2)**0.5
 
 class Plan():
-    root = None
+    canvas = None
     size = None
     @staticmethod
-    def set_root(root):
-        Plan.root = root
+    def set_canvas(canvas):
+        Plan.canvas= canvas
     def __init__(self, size, *args, **kwargs):
         # we create a plan with vertex called A,B,C,D
         #               A
@@ -31,8 +31,9 @@ class Plan():
         PLAN_SIZE = size
 
         global SCREEN_HEIGHT, SCREEN_WIDTH
-        SCREEN_HEIGHT = Plan.root.winfo_height()
-        SCREEN_WIDTH = Plan.root.winfo_width()
+        SCREEN_HEIGHT = Plan.canvas.winfo_height()
+        SCREEN_WIDTH = Plan.canvas.winfo_width()
+        print(SCREEN_HEIGHT, SCREEN_WIDTH)
         print(SCREEN_HEIGHT, SCREEN_WIDTH)
         A_y = SCREEN_HEIGHT/2
         A_x = SCREEN_WIDTH/2
