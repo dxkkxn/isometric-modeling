@@ -1,5 +1,5 @@
 from color import Color
-from parser_x import parser
+from parserx import parser
 import random
 from rhombus import Rhombus
 
