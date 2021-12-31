@@ -18,6 +18,7 @@ menubar.py : Fichier contenant la frame superieur (le menu) et ses fontions
 plan.py : Implémentation de un objet Plan
 aide : Repertoire contenant de fichier .txt pour l'aide
 img  : Repertoire contenant les images utilises dans le projet
+examples : quelques examples pour que vous puissiez tester la fonctionalite d'ouvrir
 
 ## Details
 * Les fichiers d'aide on des saut des lignes superflus pour demontrer que les 
