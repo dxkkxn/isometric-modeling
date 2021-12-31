@@ -1,33 +1,28 @@
+#I52 Modelisation isometrique
+## Utilisation
+```bash 
+    $ python main.py
+```
+## Description
+L'archive contient les fichiers suivants détaille' ci-dessous :
 
-Les fonctionnalités demandées, volontairement approximatives, sont par ordre 
-d’importance décroissante :
+main.py : Fichier main (coeur du projet)
+parserx.py : Le fichier du premier tp ou le fichier /etc/X11/rgb est parse' et 
+il genere un dico avec les noms et les couleurs
+color.py : Implémentation du un objet Color
+colorframe.py : Implémentation du menu ou l'utilisteur peut choisir des couleurs
+ou bouger le plan
+rhombus.py : Implémentation du un objet Rhombus pour representer les losanges
+cube.py : Implémentation du un objet Cube pour representer les cubes
+menubar.py : Fichier contenant la frame superieur (le menu) et ses fontions
+plan.py : Implémentation de un objet Plan
 
-
-- [x] de définir interactivement ou par commandes une scène en 3D isométrique,
-- [x] afficher un cube
-- [x] placer un cube dans le plan isometrique
-- [x] habiliter la posibilite de placer de cubes a cote d'autres cubes
-- [x] mettre en oevre l'algorithme du peintre
-- [x] effacer un cube dans le plan isometrique
-- [ ] mettre en oeuvre l'eclairage zenithal
-- [ ] de choisir couleurs et « hauteur » des cubes,
-- [ ] faire tout le code en oop avec des clases
-- [ ] d’offrir une aide en ligne si possible contextuelle,
-- [ ] de modifier ou de supprimer des parties de la scène,
-- [ ] de sauvegarder et de charger des scènes,
-- [ ] de paramétrer les constituants de l’application,
-- [ ] d’associer des pixmaps aux cubes
-
-
-Questions
-- [ ] augmenter taille cubes? -> zoom scroll_bar
-- [ ] Placer des cubes en hauteur?
-- [ ] modifier ou de supprimer des parties de la scene
-- [ ] sauvegarder format?
-- [ ] couleurs ou pixmaps?
-- [ ] pismaps eclairage zenithal?
-- [ ] classe conteneur
-- [ ] aide design application
-- [ ] gerer orientation? essentiel?
-- [ ] %poo et %ihm
+## Details
+* Les fichiers d'aide on des saut des lignes superflus pour demontrer que les 
+hiperliens marcher correctement
+* Vous pouvez zoomer et dezoomer avec la roulette du souris
+* Vous pouvez vous deplacer avec l'outil dedie' 
+* Plan n'est pas une class conteneur car je n'ai pas trouve' necessaire, 
+en effet faire un dictionaire global `a tous les cubes suffit car il n'y a pas 
+besoin de creer differents conteneurs 
 

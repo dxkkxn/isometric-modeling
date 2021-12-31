@@ -1,4 +1,4 @@
-from parser_x import parser
+from parserx import parser
 import random
 
 class Color(object):

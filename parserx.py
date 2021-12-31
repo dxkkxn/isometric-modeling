@@ -1,4 +1,5 @@
 import tkinter as tk
+
 def normalize_name(ch):
     """
     Takes a str in paramater with spaces and in small case and return the str 
