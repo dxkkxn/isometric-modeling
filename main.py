@@ -201,7 +201,7 @@ def main():
     root = tk.Tk()
     root.title("Modelisation Isometrique")
     root.attributes("-zoom", True)
-    root.resizable(False, False)
+    root.geometry("1920x1080")
     root.update_idletasks()
 
     app = MainApplication(root)
