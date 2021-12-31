@@ -16,6 +16,8 @@ rhombus.py : Implémentation du un objet Rhombus pour representer les losanges
 cube.py : Implémentation du un objet Cube pour representer les cubes
 menubar.py : Fichier contenant la frame superieur (le menu) et ses fontions
 plan.py : Implémentation de un objet Plan
+aide : Repertoire contenant de fichier .txt pour l'aide
+img  : Repertoire contenant les images utilises dans le projet
 
 ## Details
 * Les fichiers d'aide on des saut des lignes superflus pour demontrer que les 

@@ -62,5 +62,7 @@ class Color(object):
 
 if __name__ == "__main__" :
     col = Color.from_hex_str("#ff0000")
+    col1 = Color(0, 255, 0)
     col2 =  col.shade_color(0.25)
-    print(col.to_hex_rgb(), col2.to_hex_rgb())
+    randomcol = Color.random_col()
+    print(col.to_hex_rgb(), col2.to_hex_rgb(), col1, random_col)
