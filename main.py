@@ -148,7 +148,6 @@ class MainApplication(object):
     def create_plan(self, size):
         if self.initial_frame.shown:
             self.initial_frame.toggle_visibility()
-        self.root.attributes("-zoom", True)
         self.canvas.pack(side="top", expand=True, fill="both")
         self.main_frame.pack(fill="both", expand=True)
         self.root.update_idletasks()
@@ -201,11 +200,8 @@ class MainApplication(object):
 def main():
     root = tk.Tk()
     root.title("Modelisation Isometrique")
-    sc_width = root.winfo_screenwidth()
-    sc_height = root.winfo_screenheight()
-    # root.geometry("{}x{}".format(sc_width//2, sc_height//2,))
-    # root.resizable(False, False)
-    root.geometry("1920x1080")
+    root.attributes("-zoom", True)
+    root.resizable(False, False)
     root.update_idletasks()
 
     app = MainApplication(root)
